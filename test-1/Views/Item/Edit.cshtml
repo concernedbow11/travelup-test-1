@@ -1,0 +1,75 @@
+﻿@* @model List<Item>
+
+<h2>Edit Item</h2>
+
+<form id="editForm" asp-action="Edit" method="post">
+    <div class="form-group">
+        <label for="itemId">Select Item:</label>
+        <select class="form-control" id="itemId" name="id">
+            @foreach (var item in Model)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="newName">New Name:</label>
+        <input type="text" class="form-control" id="newName" name="newName" />
+    </div>
+    <div class="form-group">
+        <label for="newPrice">New Price:</label>
+        <input type="text" class="form-control" id="newPrice" name="newPrice" />
+    </div>
+    <button type="button" class="btn btn-primary" onclick="editItem()">Edit Item</button>
+</form>
+
+
+<script>
+    function editItem() {
+        var itemId = document.getElementById("itemId").value;
+        var newName = document.getElementById("newName").value;
+        var newPrice = document.getElementById("newPrice").value;
+
+        var formData = new FormData();
+        formData.append("Id", itemId);
+        formData.append("Name", newName);
+        formData.append("Price", newPrice);
+
+        fetch("/Item/Edit/" + itemId, {
+            method: "POST",
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log("Edit successful:", data);
+                // Redirect to the index page or perform any other action
+                window.location.href = "/Item/Index";
+            })
+            .catch(error => {
+                console.error("There was an error:", error);
+            });
+    }
+</script>
+ *@
+
+@model Item
+
+<h2>Edit Item</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="itemName">Item Name:</label>
+        <input type="text" class="form-control" id="itemName" name="Name" value="@Model.Name" />
+    </div>
+    <div class="form-group">
+        <label for="itemPrice">Item Price:</label>
+        <input type="text" class="form-control" id="itemPrice" name="Price" value="@Model.Price" />
+    </div>
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <button type="submit" class="btn btn-primary">Edit Item</button>
+</form>

@@ -1,8 +1,23 @@
 ﻿@model List<Item>
 <h2>Items</h2>
-<ul>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
     @foreach (var item in Model)
     {
-        <li>@item.Name - $@item.Price</li>
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.Price</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            </td>
+        </tr>
     }
-</ul>
+</table>
+
+<a asp-action="Create">Add New Item</a> |
+<a asp-action="Delete"> Delete an Item</a>
