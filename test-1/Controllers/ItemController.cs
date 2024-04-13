@@ -192,6 +192,32 @@ namespace test_1.Controllers
             return View(items);
         }
 
+        // POST: Item/AddItem
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddItem(Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Items.Add(item);
+                    await _context.SaveChangesAsync();
+
+                    // Return the newly added item as JSON
+                    return Json(new { id = item.Id, name = item.Name, price = item.Price });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Error adding item: " + ex.Message);
+                }
+            }
+
+            // If there are validation errors or an exception occurred, return a bad request
+            return BadRequest(ModelState);
+        }
+
+
     }
 
 }

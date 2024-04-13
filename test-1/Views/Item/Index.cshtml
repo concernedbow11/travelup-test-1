@@ -21,3 +21,68 @@
 
 <a asp-action="Create">Add New Item</a> |
 <a asp-action="Delete"> Delete an Item</a>
+<hr />
+<h5>Asynchronously add item to list without refreshing the page</h5>
+
+<form id="addItemForm">
+    <div class="form-group">
+        <label for="itemName">Item Name:</label>
+        <input type="text" class="form-control" id="itemName" required />
+        <div class="invalid-feedback">Please enter a name for the item.</div>
+    </div>
+    <div class="form-group">
+        <label for="itemPrice">Item Price:</label>
+        <input type="number" class="form-control" id="itemPrice" required />
+        <div class="invalid-feedback">Please enter a valid price for the item.</div>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addItem()">Add Item</button>
+</form>
+
+<script>
+    function addItem() {
+        var itemName = document.getElementById("itemName").value;
+        var itemPrice = document.getElementById("itemPrice").value;
+
+        // Client-side validation
+        if (!itemName || !itemPrice) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        // Send AJAX request to add item
+        var formData = new FormData();
+        formData.append("Name", itemName);
+        formData.append("Price", itemPrice);
+
+        fetch("/Item/AddItem", {
+            method: "POST",
+            body: formData,
+            headers: {
+            "Accept": "application/json" // Ensure that the client expects JSON response
+        }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to add item.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update UI with newly added item
+                var newItem = document.createElement("tr");
+                newItem.innerHTML = `
+                    <td>${data.id}</td>
+                    <td>${data.name}</td>
+                    <td>${data.price}</td>
+                `;
+                document.getElementById("itemList").appendChild(newItem);
+
+                // Reset form fields
+                document.getElementById("itemName").value = "";
+                document.getElementById("itemPrice").value = "";
+            })
+            .catch(error => {
+                console.error("Error adding item:", error.message);
+            });
+    }
+</script>
