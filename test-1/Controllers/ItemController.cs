@@ -40,80 +40,13 @@ namespace test_1.Controllers
             }
             return View(item);
         }
-        [HttpGet]
-/*        public async Task<ActionResult> Edit()
-        {
-            var items = await _context.Items.ToListAsync();
-            return View(items);
-        }*/
+
         [HttpGet]
         public async Task<ActionResult> Delete()
         {
             var items = await _context.Items.ToListAsync();
             return View(items);
         }
-
-        /*        // GET : Item/Edit
-                [HttpGet]
-                public async Task<ActionResult> Edit(int? id)
-                {
-                    if (id == null)
-                    {
-                        var items = await _context.Items.ToListAsync();
-                        return View(items);
-                    }
-
-                    var item = await _context.Items.FindAsync(id);
-
-                    if (item == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return View(item);
-                }
-        */
-        /*// POST: Item/Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, string newName, decimal newPrice)
-        {
-            var item = await _context.Items.FindAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            item.Name = newName;
-            item.Price = newPrice;
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(item);
-                    await _context.SaveChangesAsync();
-                    return Ok(); // Return a 200 OK response if the update was successful
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ItemExists(item.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, ex.Message); // Return a 500 Internal Server Error response if an error occurs
-                }
-                
-            }
-            return BadRequest(ModelState);
-        }*/
 
         // GET: Item/Edit
         [HttpGet]

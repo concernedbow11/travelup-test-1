@@ -10,8 +10,7 @@ namespace test_1.Models
         {
         }
 
-        public DbSet<Item> Items { get; set; } // DbSet representing your Items table
+        public DbSet<Item> Items { get; set; } // DbSet representing Items table
 
-        // Add DbSet properties for other tables if needed
     }
 }
